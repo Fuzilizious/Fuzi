@@ -175,8 +175,9 @@ def vert_profile(dds, var, profile, type, mrun='multi', time=None, freq='6H'):
 
 
 def snowpack(ds, var):
-    #  querschniit der schneedecke
-    #  var als color über dz als stacked bar plot (width=1) !!!
+    #  crosssection of the snowpack
+    #  not used for theseis.. therefore not pretty
+    #  var as color over dz as stacked bar plot (width=1) !!!
 
     if var == 'Sn_wet':
         import SnowTools as st
@@ -307,23 +308,6 @@ def max_bar(df, ax, colors, value='max', max=35, dim='elem', fontsize=5):
     ax.text(.5, -0.1, value + ' values', fontsize=7, horizontalalignment='center', transform=ax.transAxes)
     ax.patch.set_alpha(0)
     ax.axis('off')
-
-
-def wever_alpha_n():
-
-    profiles = ['LayerCh', 'SurfHoar']
-    marker = {'LayerCh': 'o', 'SurfHoar': 'x'}
-
-    fig, axs = plt.subplots()
-    for profile in profiles:
-        alpha = 7.3 * st.kWL[profile] + 1.9
-        n = 15.68 * np.exp(-0.46 * st.kWL[profile]) + 1
-        axs.scatter(st.kWL[profile], alpha, marker=marker[profile], color='tab:blue')
-        axs.scatter(st.kWL[profile], n, marker=marker[profile], color='tab:orange')
-    axs.set_xlabel('grain diameter')
-    axs.set_title('Parameterizations')
-    axs.legend([r'$\alpha$ (LayerCh)', 'n (LayerCh)', r'$\alpha$ (SurfHoar)', 'n (SurfHoar)'])
-    fig.savefig('parametrizations' + '.pdf')
 
 
 def plot_extr_time(var='lwc', extr='max'):
@@ -469,6 +453,7 @@ max_label = {'lwc': '$\\theta_{max}$ (%$_{vol}$)', 'Sn_wet': '$Sn_{wet, max}$', 
              'shear_strength': '$\sigma_{max}$ (kPa)', 'stress': '$\\tau_{max}$ (kPa)'}
 extr_tit = {'max': '$MAX_{LWC}$', 'mean': 'LWC$_{index}$', 'min': '$Sn_{wet}$'}
 extr_val = {'max': '6%$_{vol}$', 'mean': '3%$_{vol}$', 'min': '1'}
+
 
 if __name__ == "__main__":
     for mean_typ in ['ArithMean', 'GeoMean', 'hRes/arith', 'hRes/geo']:
