@@ -110,8 +110,6 @@ def main(argv):
 
                 index += 1
 
-# TODO: automatically run pro2netcdf for excecuted model runs
-
 
 if __name__ == "__main__":
     main(sys.argv[1:])
