@@ -86,7 +86,6 @@ def adjustLayerThickness(head, data, thick, para, *args):
         data = adjustNe(data, -1)
 
     # calculate overall height and change in header
-    # TODO: get lineindex of height (11) automatically
     height = np.sum(data[:, 0])
     head[11] = head[11].replace(head[11][-9:-1], str('%.6f' % height))
 
