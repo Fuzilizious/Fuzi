@@ -166,7 +166,7 @@ def vert_profile(dds, var, profile, type, mrun='multi', time=None, freq='6H'):
     handles, labels = axs[0, 0].get_legend_handles_labels()
     labels = getattr(st, type)[profile[:-2]]
     lgd = fig.legend(handles, labels.round(decimals=2).astype(str), loc='center left', title=legend_title[type],
-                     bbox_to_anchor=(1, 0.5))  # (1.01, 0.5)
+                     bbox_to_anchor=(1, 0.5))
 
     tit = fig.suptitle(var_title[var] + '\n vertical profiles from ' + profile[:-2] + ' changing ' +
                        type_title[type], y=1.05, fontsize=15)
@@ -186,19 +186,15 @@ def snowpack(ds, var):
         ds[var] = st.Sn38(ds)
 
     data = ds[var].values.transpose()
-    norm = plt.Normalize(vmin=np.nanmin(data), vmax=np.nanmax(data))  # TODO: min max evtl. fixed for better visuals
+    norm = plt.Normalize(vmin=np.nanmin(data), vmax=np.nanmax(data)) 
     my_cmap = my_colormap(var)
-    # my_cmap = plt.cm.get_cmap('Blues')
-    colors = my_cmap(norm(data))  # creates Warning due to NaN values -> works still
-    #dz = ds.dz.to_dataframe().unstack('elem')
+    colors = my_cmap(norm(data))  
     dz = ds.dz.to_pandas()
     fig, ax = plt.subplots()
     dz.plot.bar(ax=ax, stacked=True, width=1, color=colors, legend=None)
     sm = ScalarMappable(cmap=my_cmap, norm=norm)
     sm.set_array(np.array([]))
     cbar = plt.colorbar(sm)
-
-    # TODO: xaxis Dateticks every 2h or so
 
     newday = dz.index.strftime('%H:%M') == '00:00'
     noon = dz.index.strftime('%H:%M') == '12:00'
@@ -214,15 +210,12 @@ def snowpack(ds, var):
         label.set_rotation(0)
     plt.show()
 
-    # TODO: snowheight as ylabel
-
 
 def max_timeline(ds, var, profile, type, value='max'):
 
     if var == 'Sn_wet':
         ds[var] = st.Sn_wet(ds)
         ds.attrs[var] = ''
-      #  ds['Sn_dry'] = st.Sn_dry(ds)
 
     if value == 'max':
         dmax = ds.max(dim='elem')
@@ -238,9 +231,6 @@ def max_timeline(ds, var, profile, type, value='max'):
     lines = [None] * len(dmax.run)
     for r in dmax.run:
         lines[int(r)-1] = dmax[var].sel(run=int(r)).plot.line(x='date', c=colors[int(r)-1], linewidth=0.6)
-
-    #if var == 'Sn_wet':
-     #   dmax['Sn_dry'].sel(run=st.orig_run(profile, type)).plot.line(x='date', c='k', linestyle='dashed', linewidth=0.6)
 
     if value == 'max':
         plt.ylim(0, 35)
@@ -264,8 +254,6 @@ def max_timeline(ds, var, profile, type, value='max'):
     #ax.xaxis.set_minor_formatter(mdates.DateFormatter('%H:%M'))
     ax.xaxis.set_minor_locator(mdates.HourLocator(interval=1))
     _ = plt.xticks(rotation=0, horizontalalignment='center')
-
-    #  TODO: ylim automatisch auch für max_bar !!!
 
     plt.autoscale(enable=True, axis='x', tight=True)
     plt.ylabel(var_label[var], fontsize=12)
@@ -293,7 +281,6 @@ def sub_shape(n):
 
 
 def my_colormap(var):
-
     #define colormaps for all variables
     if var in ['lwc', 'Sn_wet']:
         return plt.cm.get_cmap('Blues')
@@ -317,15 +304,7 @@ def max_bar(df, ax, colors, value='max', max=35, dim='elem', fontsize=5):
         [ax.text(i, v, ' {:.1f}'.format(v), fontsize=fontsize, color='black', horizontalalignment='center',
                  rotation=90) for i, v in enumerate(minima.Sn_wet)]
 
-    #plt.setp(ax, xlabel='max')
-    #ax.xaxis.set_ticks_position('none')
-    #ax.yaxis.set_ticks_position('none')
-    #plt.setp(ax.get_xticklabels(), visible=False)
-
     ax.text(.5, -0.1, value + ' values', fontsize=7, horizontalalignment='center', transform=ax.transAxes)
-    #plt.setp(ax.get_yticklabels(), visible=False)
-    #ax.set_title('$LWC_{max}$', fontsize=5)
-    #ax.set_xlabel('maxima')
     ax.patch.set_alpha(0)
     ax.axis('off')
 
@@ -344,7 +323,6 @@ def wever_alpha_n():
     axs.set_xlabel('grain diameter')
     axs.set_title('Parameterizations')
     axs.legend([r'$\alpha$ (LayerCh)', 'n (LayerCh)', r'$\alpha$ (SurfHoar)', 'n (SurfHoar)'])
-    #plt.show()
     fig.savefig('parametrizations' + '.pdf')
 
 
@@ -421,8 +399,6 @@ def main(var, mean_typ, plot_typ='vert'):
               '/' + var + '_' + plot_typ + '/'
     freq = '30T'
 
-    #TODO: input via command line
-
     if not os.path.exists(outpath):
         os.makedirs(outpath)
 
@@ -431,8 +407,6 @@ def main(var, mean_typ, plot_typ='vert'):
         if profile == 'DepthHoar_R':
             start = {'dWL': '2016-02-01T11:00:00', 'hWL': '2016-02-01T10:00:00', 'roh': '2016-02-01T11:00:00',
                      'kWL': '2016-02-01T11:00:00'}
-            #start = {'dWL': '2016-02-01T10:00:00', 'hWL': '2016-02-01T10:00:00', 'roh': '2016-02-01T10:00:00',
-             #        'kWL': '2016-02-01T10:00:00'}
             end = {'dWL': '2016-02-01T18:30:00', 'hWL': '2016-02-01T17:30:00', 'roh': '2016-02-01T18:30:00',
                    'kWL': '2016-02-01T18:30:00'}
         else:
