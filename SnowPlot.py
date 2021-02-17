@@ -122,7 +122,7 @@ def vert_profile(dds, var, profile, type, mrun='multi', time=None, freq='6H'):
                                  linewidth=0.6, linestyle='dashed')
 
                 #  Plot height of WL
-                if profile == 'SchichtW_R':
+                if profile == 'LayerCh_R':
                     wl_bottom = 0
                     wl_top = 20
                 elif profile in ['MeltCrust_R', 'SurfHoar_R', 'SurfHoaR_hr_R']:
@@ -160,7 +160,7 @@ def vert_profile(dds, var, profile, type, mrun='multi', time=None, freq='6H'):
                      rotation=90, fontsize=12)
     x_lab = fig.text(0.5, -0.01, var_label[var], horizontalalignment='center', fontsize=12)
 
-    if type == 'roh':
+    if type == 'rho':
         fig.text(1, 0.60, r'$\frac{\rho_{WL}}{\rho_{Slab}} = $' + str(st.density_rel[profile]),
                  horizontalalignment='left', fontsize=10)
     handles, labels = axs[0, 0].get_legend_handles_labels()
@@ -261,7 +261,7 @@ def max_timeline(ds, var, profile, type, value='max'):
     plt.xlabel('Date', fontsize=12)
     labels = getattr(st, type)[profile[:-2]]
     lgd = plt.legend(labels.round(decimals=2).astype(str), loc=2, title=legend_title[type])
-    if type == 'roh':
+    if type == 'rho':
         fig.text(0.1, 0.45, r'$\frac{\rho_{WL}}{\rho_{Slab}} = $' + str(st.density_rel[profile]),
                      horizontalalignment='left', fontsize=10)
 
@@ -312,7 +312,7 @@ def max_bar(df, ax, colors, value='max', max=35, dim='elem', fontsize=5):
 
 def plot_extr_time(var='lwc', extr='max'):
     profiles = ['MeltCrust_R', 'SurfHoar_R', 'DepthHoar_R', 'LayerCh_R']
-    types = ['kWL', 'hWL', 'dWL', 'roh']
+    types = ['kWL', 'hWL', 'dWL', 'rho']
     mittel = ['ArithMean', 'GeoMean']
     path = '/Users/fuzi/Documents/Simulations/Snowpack-3.5.0/data/output/'
 
@@ -327,7 +327,7 @@ def plot_extr_time(var='lwc', extr='max'):
         y_ticklab = [None] * 4
         for i, typ in zip(np.arange(4), types):
             y_ticklab[i] = profile[:-2] + '\n' + typ
-        if profile == 'SchichtW':
+        if profile == 'LayerCh':
             y_ticklab.pop(2)
 
         fig, axs = plt.subplots()
@@ -377,7 +377,7 @@ def plot_extr_time(var='lwc', extr='max'):
 
 def main(var, mean_typ, plot_typ='vert'):
     profiles = ['MeltCrust_R', 'SurfHoar_R', 'DepthHoar_R', 'LayerCh_R']
-    types = ['kWL', 'hWL', 'dWL', 'roh']
+    types = ['kWL', 'hWL', 'dWL', 'rho']
     path = '/Users/fuzi/Documents/Simulations/Snowpack-3.5.0/data/output/' + mean_typ + '/NetCDF/'
     outpath = '/Users/fuzi/Documents/Simulations/Snowpack-3.5.0/data/Plots/' + mean_typ + \
               '/' + var + '_' + plot_typ + '/'
@@ -389,14 +389,14 @@ def main(var, mean_typ, plot_typ='vert'):
     for profile in profiles:
 
         if profile == 'DepthHoar_R':
-            start = {'dWL': '2016-02-01T11:00:00', 'hWL': '2016-02-01T10:00:00', 'roh': '2016-02-01T11:00:00',
+            start = {'dWL': '2016-02-01T11:00:00', 'hWL': '2016-02-01T10:00:00', 'rho': '2016-02-01T11:00:00',
                      'kWL': '2016-02-01T11:00:00'}
-            end = {'dWL': '2016-02-01T18:30:00', 'hWL': '2016-02-01T17:30:00', 'roh': '2016-02-01T18:30:00',
+            end = {'dWL': '2016-02-01T18:30:00', 'hWL': '2016-02-01T17:30:00', 'rho': '2016-02-01T18:30:00',
                    'kWL': '2016-02-01T18:30:00'}
         else:
-            start = {'dWL': '2016-02-01T09:00:00', 'hWL': '2016-02-01T09:00:00', 'roh': '2016-02-01T09:00:00',
+            start = {'dWL': '2016-02-01T09:00:00', 'hWL': '2016-02-01T09:00:00', 'rho': '2016-02-01T09:00:00',
                      'kWL': '2016-02-01T09:00:00'}
-            end = {'dWL': '2016-02-01T16:30:00', 'hWL': '2016-02-01T16:30:00', 'roh': '2016-02-01T16:30:00',
+            end = {'dWL': '2016-02-01T16:30:00', 'hWL': '2016-02-01T16:30:00', 'rho': '2016-02-01T16:30:00',
                    'kWL': '2016-02-01T16:30:00'}
 
         for type in types:
@@ -437,10 +437,10 @@ def main(var, mean_typ, plot_typ='vert'):
 
 # Some dictionaries for the plot labels
 
-legend_title = {'dWL': '$h_{WL}$ (cm)', 'hWL': '$h_{slab}$ (cm)', 'roh': '$density$ (%)',
+legend_title = {'dWL': '$h_{WL}$ (cm)', 'hWL': '$h_{slab}$ (cm)', 'rho': '$density$ (%)',
                 'kWL': '$d_{grain}$ (mm)'}
 type_title = {'dWL': 'height of WL', 'hWL': 'height of Slab',
-              'roh': 'density of WL', 'kWL': 'grain diameter'}
+              'rho': 'density of WL', 'kWL': 'grain diameter'}
 var_title = {'Sn_wet': 'Natural Stability $(Sn_{wet})$', 'Sn_wet_manu': '$(Sn_{wet,manu})$',
              'lwc': 'Liquid Water Content $(\\theta_{w,v})$', 'shear_strength': 'Shear Strength $(\sigma_d)$',
              'sigma_wet': 'Shear Strength $(\sigma_{wet})$', 'stress': 'Stress $(\\tau)$'}
