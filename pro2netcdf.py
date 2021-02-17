@@ -172,7 +172,7 @@ def main(argv):
     # default: run all Variations of Profiles and Parameters if none specific is chosen
     # via command line input
     profiles = ['MeltCrust_R', 'SurfHoar_R', 'DepthHoar_R', 'LayerCh_R']
-    types = ['kWL', 'hWL', 'dWL', 'roh']
+    types = ['kWL', 'hWL', 'dWL', 'rho']
     mean_typ = 'ArithMean'
     profile_in = False
     mode = 'RE'
