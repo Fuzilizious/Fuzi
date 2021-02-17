@@ -43,7 +43,7 @@ def main(argv):
     # hWL: height of the slab
     # dWL: thickness of the WL
     # density of the WL
-    paras = ['kWL', 'hWL', 'dWL', 'roh']
+    paras = ['kWL', 'hWL', 'dWL', 'rho']
 
     # get input from command line. default: above if none chosen
     try:
@@ -53,7 +53,7 @@ def main(argv):
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('MySnowpack.py -s <Name_of_snowprofile> -p <Parameter to change (roh, hWL, dWL, kWL)>')
+            print('MySnowpack.py -s <Name_of_snowprofile> -p <Parameter to change (rho, hWL, dWL, kWL)>')
             sys.exit()
         elif opt in ("-s", "--sfile"):
             snowprofile = [arg]
@@ -94,7 +94,7 @@ def main(argv):
                 # read *.sno file
                 [head, data, timestamp] = sno.read_sno(snowpath + 'Orig/' + snowfile, mode)
                 # change parameter
-                if para == 'roh':
+                if para == 'rho':
                     data = sno.adjustDensity(data, p)
                 elif para == 'dWL':
                     [head, data] = sno.adjustLayerThickness(head, data, np.round(p * 1e-2, 3), para)
