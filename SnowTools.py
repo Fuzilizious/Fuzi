@@ -168,7 +168,7 @@ def orig_run(profile, typ):
 
     if typ == 'hWL':
         return 6
-    elif typ == 'roh':
+    elif typ == 'rho':
         return 5
     elif typ == 'dWL':
         return orig_dWL[profile]
@@ -207,7 +207,7 @@ def get_ext_time(ds, var, extr):
 
 # Parameter Ranges for sensitivity analysis:
 # Density ranges ± 20%; 5% steps
-roh = {'DepthHoar': np.linspace(0.8, 1.2, 9), 'SurfHoar': np.linspace(0.8, 1.2, 9),
+rho = {'DepthHoar': np.linspace(0.8, 1.2, 9), 'SurfHoar': np.linspace(0.8, 1.2, 9),
        'MeltCrust': np.linspace(0.8, 1.2, 9), 'LayerCh': np.linspace(0.8, 1.2, 9)}
 
 # height of Slab 5-30cm
